@@ -18,6 +18,6 @@ public class HealKit : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         //Destroy(collision.gameObject);
-        collision.GetComponent<HealthComponent>().AddHealth(heal);
+        collision.GetComponent<Health_Component>().AddHealth(heal);
     }
 }
