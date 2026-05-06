@@ -9,7 +9,7 @@ public class UI_Health_Display : MonoBehaviour
     public TextMeshProUGUI textComponent;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    void Awake()
     {
         healthComponent.OnHealthChanged += OnHealthChanged;
         healthComponent.OnHealthInitialized += OnHealthInitialized;

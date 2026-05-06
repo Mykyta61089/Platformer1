@@ -10,7 +10,7 @@ public class Coin_Component : MonoBehaviour
     public event CoinEventHandler CoinAmountChanged;
     private void Start()
     {
-        AddPoints(0);
+        AddPoints(1);
     }
     public void AddPoints(float amount)
     {

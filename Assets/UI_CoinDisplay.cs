@@ -7,7 +7,7 @@ public class UI_CoinDisplay : MonoBehaviour
     public Coin_Component coinComp;
     public TextMeshProUGUI coinText;
 
-    private void awoke()
+    private void Awake()
     {
         coinComp.CoinAmountChanged += Coin_Comp_CoinAmountChanged;
     }
