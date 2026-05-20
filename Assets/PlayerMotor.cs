@@ -1,11 +1,12 @@
 using System.Collections;
+using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class Player_motor : MonoBehaviour
 {
     Vector2 direction;
-    Rigidbody2D rigidbody2D;
+    new Rigidbody2D rigidbody2D;
     public float speed = 10;
     public float jumpForce = 10;
     public float maxSpeed = 5;
@@ -14,10 +15,29 @@ public class Player_motor : MonoBehaviour
     private bool canJump = true;
     private bool canDash = true;
 
+    public int maxJump = 2;
+    private int currentjump;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         rigidbody2D = GetComponent<Rigidbody2D>();
+        _animator = GetComponent<Animator>();
+        _intscale = transform.localScale.x;
+    }
+
+    private void FixedUpdate()
+    { 
+    {
+      if(direction.x > 0)
+            {
+                transform.localScale = new Vector3(_intscale, transform.localScale.y, transform.localScale.z);
+            }
+      else if (direction.x < 0)
+            {
+                transform.localScale = new Vector3(-_intscale, transform.localScale.y, transform.localScale.z);
+            }
+        MovePlayer();
+        LimitMaxSpeed();
     }
 
     // Update is called once per frame
@@ -48,6 +68,31 @@ public class Player_motor : MonoBehaviour
         //transform.position += new Vector3(direction.x, direction.y, 0) * Time.deltaTime * speed;
     }
 
+    private void MovePlayer()
+    {
+        if (direction.x != 0)
+        {
+            rigidbody2D.AddForce(new Vector2(direction.x * acceleration, 0))
+                _animator.Setbool("IsMoving", true);
+        }
+        else if (_rigidbody2D.linearVelocityX != 0)
+        {
+            if (_rigidbody2D.linearVelocityX < stoppingPoint && _rigibody2D.linearVelocityX > -stoppingPoint)
+            {
+                _rigibody2D.linearVelocity = new Vector2(0.0f, _rigibody2D.linearVelocityY);
+            }
+            else
+            {
+                _rigibody2D.AddForce(new Vector2(-_rigibody2D.linearVelocityX * stoppingForce, 0));
+            }
+        }
+
+        if (direction.x == 0)
+        {
+            _animator.SetBool("isMoving", false)
+        }
+    }
+        
     void OnMove(InputValue value)
     {
         //Debug.Log("Move");
@@ -61,7 +106,11 @@ public class Player_motor : MonoBehaviour
         if (canJump)
         {
             rigidbody2D.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
-            canJump = false;
+            currentjump++;
+            if (currentjump >= maxJump)
+            {
+                canJump = false;
+            }
         }
 
     }
