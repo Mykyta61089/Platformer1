@@ -95,16 +95,27 @@ public class Player_motor : MonoBehaviour
     private void OnJump()
     {
 
-
+        if (skoki < 2)
+        {
+            animator.SetBool("IsDoubleJumping", true);
+        }
         if (canJump)
         {
             //Debug.Log("Jump");
             rigidbody2D.AddForce(Vector2.up * 10 * jumpForce, ForceMode2D.Impulse);
             skoki--;
+            animator.SetBool("IsJumping", true);
 
         }
+        else if (canDoubleJump)
+        {
+            rigidbody2D.AddForce(Vector2.up * 10 * jumpForce *0.5f, ForceMode2D.Impulse);
 
+            canDoubleJump = false;
+        }
+        
 
+        
 
         if (skoki == 0)
         {
@@ -116,10 +127,14 @@ public class Player_motor : MonoBehaviour
         skoki = 2;
 
 
-        if (skoki != 0)
+        if (skoki == 1)
         {
             canJump = true;
         }
+        canJump = true;
+        canDoubleJump = true;
+        animator.SetBool("IsJumping", false);
+        animator.SetBool("IsDoubleJumping", false) ;
     }
 
     private void OnDash()
